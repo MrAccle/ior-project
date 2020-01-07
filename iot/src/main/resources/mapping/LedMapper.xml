@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ymh.iot.mapper.LedMapper">
+  <resultMap id="BaseResultMap" type="com.ymh.iot.pojo.Led">
+    <result column="led" jdbcType="CHAR" property="led" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+  </resultMap>
+  <insert id="insert" parameterType="com.ymh.iot.pojo.Led">
+    insert into led (led, state)
+    values (#{led,jdbcType=CHAR}, #{state,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ymh.iot.pojo.Led">
+    insert into led
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="led != null">
+        led,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="led != null">
+        #{led,jdbcType=CHAR},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

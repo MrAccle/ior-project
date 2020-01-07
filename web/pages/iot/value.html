@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>value list</title>
+    <meta name="renderer" content="webkit" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <link rel="stylesheet" href="../../static/css/font.css" />
+    <link rel="stylesheet" href="../../static/css/weadmin.css" />
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+		  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+		  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+</head>
+
+<body>
+    <div class="weadmin-nav">
+        <span class="layui-breadcrumb">
+            <a href="javascript:;">首页</a> <a href="javascript:;">value</a>
+            <a href="javascript:;"> <cite>value list</cite></a>
+        </span>
+        <a class="layui-btn layui-btn-sm" style="margin-top:3px;float:right"
+            href="javascript:location.replace(location.href);" title="刷新">
+            <i class="layui-icon layui-icon-refresh"></i>
+            <!-- <i class="layui-icon" style="line-height:30px">&#x1002;</i> -->
+        </a>
+    </div>
+    <!-- id="employeeTable" -->
+    <div class="weadmin-body">
+        <blockquote class="layui-elem-quote">value</blockquote>
+        <!-- 搜索框 -->
+        <div class="layui-row">
+            <form class="layui-form layui-col-md12 we-search" lay-filter="departmentSelect">
+                <!-- <span style="color: red">led</span> -->
+            </form>
+        </div>
+        <!-- 工具栏 -->
+        <!-- 表格内容 -->
+        <div id="A" style="width: 100%;height:700px;"></div>
+        <!-- <div id="B" style="width: 600px;height:400px;"></div> -->
+    </div>
+    <script src="../../lib/layui/layui.js" charset="utf-8"></script>
+    <script src="../../static/js/jq.js"></script>
+    <script src="../../static/js/iot.js"></script>
+    <script src="../../static/js/charts.js"></script>
+    <script>
+        var myChart = echarts.init(document.getElementById('A'));
+        var AValueList;
+        var BValueList;
+        var Afunc = function (res) {
+            AValueList = res.data;
+            AjaxJsonData('get', '/iot/value/v/B', Bfunc, null);
+        }
+        AjaxJsonData('get', '/iot/value/v/A', Afunc, null);
+        var Bfunc = function (res) {
+            BValueList = res.data;
+            init();
+        }
+
+        window.init = function () {
+            option = {
+                title: {
+                    text: '两设备近100条数据',
+                    subtext: 'Ymh'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: ['温度', '光照强度']
+                },
+                toolbox: {
+                    show: false,
+                    feature: {
+                        mark: { show: true },
+                        dataView: { show: true, readOnly: false },
+                        magicType: { show: true, type: ['line', 'bar'] },
+                        restore: { show: true },
+                        saveAsImage: { show: true }
+                    }
+                },
+                calculable: true,
+                xAxis: [
+                    {
+                        type: 'category',
+                        boundaryGap: false,
+                        // data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        axisLabel: {
+                            formatter: '{value} '
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: '温度',
+                        type: 'line',
+                        data: AValueList,
+                        markPoint: {
+                            data: [
+                                { type: 'max', name: '最大值' },
+                                { type: 'min', name: '最小值' }
+                            ]
+                        },
+                        markLine: {
+                            data: [
+                                { type: 'average', name: '平均值' }
+                            ]
+                        }
+                    },
+                    {
+                        name: '光照强度',
+                        type: 'line',
+                        data: BValueList,
+                        markPoint: {
+                            data: [
+                                { type: 'max', name: '最大值' },
+                                { type: 'min', name: '最小值' }
+                            ]
+                        },
+                        markLine: {
+                            data: [
+                                { type: 'average', name: '平均值' }
+                            ]
+                        }
+                    }
+                ]
+            };
+
+            myChart.setOption(option);
+        }
+        function myrefresh() {
+            window.location.reload();
+        }
+        setTimeout('myrefresh()', 5000);
+    </script>
+</body>
+
+</html>

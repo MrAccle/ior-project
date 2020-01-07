@@ -1,0 +1,61 @@
+spring:
+
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://172.16.100.3/cdesinger?useSSL=false&character&Encoding=UTF-8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=round
+    druid:
+      stat-view-servlet:
+        login-username: root
+        login-password: 123
+        url-pattern: /druid/*
+        enabled: true
+      use-global-data-source-stat: true
+      connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      filters: stat,slf4j,wall
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      initial-size: 1
+      min-idle: 3
+      max-active: 20
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 30000
+      validation-query: select 'x'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      web-stat-filter:
+        session-stat-enable: true
+    username: root
+    password: 123
+  jackson:
+#    default-property-inclusion: non_null
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  aop:
+    auto: true
+
+mybatis:
+  mapper-locations: /mapping/*.xml
+
+logging:
+  level:
+    com.bangcat.server: debug
+  file: ./log/running.log
+
+pagehelper:
+  offset-as-page-num: true
+  row-bounds-with-count: true
+  page-size-zero: true
+  reasonable: false
+  params: pageNum=pageHelperStart;
+  support-methods-arguments: false
+
+mqtt:
+  #username password 可以随便填写 没设置账号密码
+  username: a
+  password: b
+  url: ws://172.16.100.4:8083/mqtt
+  clientid: java_server_mqtt
+  topic: ymh:desinger

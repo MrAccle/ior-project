@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ymh.iot.mapper.IotdeviceMapper">
+  <resultMap id="BaseResultMap" type="com.ymh.iot.pojo.Iotdevice">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="CHAR" property="name" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+  </resultMap>
+  <insert id="insert" parameterType="com.ymh.iot.pojo.Iotdevice">
+    insert into iotdevice (id, name, state)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=CHAR}, #{state,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ymh.iot.pojo.Iotdevice">
+    insert into iotdevice
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=CHAR},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

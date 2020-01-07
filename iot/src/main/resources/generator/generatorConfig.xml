@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+
+    <!--&lt;!&ndash;通过这个属性指定驱动的路径&ndash;&gt;-->
+    <classPathEntry location="D:\ProjectSpace\mysql-connector-java-8.0.8-dmr.jar"/>
+
+    <!--指定生成一组对象的环境。例如指定要连接的数据库，要生成对象的类型和要处理的数据库中的表。-->
+    <context id="testTables" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+        <!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://172.16.105.47/cdesinger?useSSL=false&amp;character&amp;Encoding=UTF-8&amp;serverTimezone=UTC"
+                        userId="root"
+                        password="123">
+        </jdbcConnection>
+
+        <!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer，为 true时把JDBC DECIMAL 和
+            NUMERIC 类型解析为java.math.BigDecimal -->
+        <!--该元素最多可以配置一个。这个元素的配置用来指定JDBC类型和Java类型如何转换。-->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!-- targetProject:生成PO类的位置 -->
+        <!-- 生成模型的包名和位置-->
+        <javaModelGenerator targetPackage="com.ymh.iot.pojo" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+        <!-- 生成映射文件的包名和位置-->
+        <sqlMapGenerator targetPackage="mapping" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+        <!-- 生成DAO的包名和位置-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.ymh.iot.mapper" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+
+        <!-- 指定数据库表 -->
+
+<!--        <table tableName="led" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false" selectByExampleQueryId="false">-->
+<!--        </table>-->
+
+<!--        <table tableName="value" enableCountByExample="false" enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false" selectByExampleQueryId="false">-->
+<!--        </table>-->
+        <table tableName="iotdevice" enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false">
+        </table>
+    </context>
+
+</generatorConfiguration>

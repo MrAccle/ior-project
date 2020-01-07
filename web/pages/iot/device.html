@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>device list</title>
+    <meta name="renderer" content="webkit" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <link rel="stylesheet" href="../../static/css/font.css" />
+    <link rel="stylesheet" href="../../static/css/weadmin.css" />
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+		  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+		  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+</head>
+
+<body>
+    <div class="weadmin-nav">
+        <span class="layui-breadcrumb">
+            <a href="javascript:;">首页</a> <a href="javascript:;">device</a>
+            <a href="javascript:;"> <cite>device list</cite></a>
+        </span>
+        <a class="layui-btn layui-btn-sm" style="margin-top:3px;float:right"
+            href="javascript:location.replace(location.href);" title="刷新">
+            <i class="layui-icon layui-icon-refresh"></i>
+            <!-- <i class="layui-icon" style="line-height:30px">&#x1002;</i> -->
+        </a>
+    </div>
+    <!-- id="employeeTable" -->
+    <div class="weadmin-body">
+        <blockquote class="layui-elem-quote">led</blockquote>
+        <!-- 搜索框 -->
+        <div class="layui-row">
+            <form class="layui-form layui-col-md12 we-search" lay-filter="departmentSelect">
+                <!-- <span style="color: red">led</span> -->
+            </form>
+        </div>
+        <!-- 工具栏 -->
+        <!-- 表格内容 -->
+        <form class="layui-form">
+            <table class="layui-table" id="griddingList" lay-filter="griddingList"></table>
+        </form>
+    </div>
+    <script src="../../lib/layui/layui.js" charset="utf-8"></script>
+    <script src="../../static/js/jq.js"></script>
+    <script src="../../static/js/iot.js"></script>
+    <script type="text/html" id="statusTemplate">
+        {{#  if(d.state === 1){ }}
+        <span class="layui-badge layui-bg-blue">在线</span>
+        <!-- <input type="checkbox" lay-filter="ledtable" name="{{ d.led }}" lay-skin="switch" checked lay-text="开启|关闭"> -->
+        {{#  } else { }}
+        <!-- <input type="checkbox" lay-filter="ledtable" name="{{ d.led }}" lay-skin="switch" lay-text="开启|关闭"> -->
+        <span class="layui-badge">离线</span>
+        {{#  } }} 
+    </script>
+    <script>
+
+        layui.extend({
+            admin: '{/}../../static/js/admin'
+        });
+
+        layui.use(['jquery', 'admin', 'table', 'form'], function () {
+            var $ = layui.jquery,
+                admin = layui.admin,
+                table = layui.table,
+                form = layui.form;
+
+            //页面初始化
+            table.render({
+                elem: "#griddingList",
+                id: 'griddingList',
+                url: serverBaseUrl + '/iot/device',
+                text: {
+                    none: '暂无相关数据' //默认：无数据。注：该属性为 layui 2.2.5 开始新增
+                },
+                page: true,
+                cols: [[ //表头
+                    { field: 'id', title: 'id', width: 200 },
+                    { field: 'name', title: '设备编号', width: 200 },
+                    { field: 'state', title: '状态', width: 200, templet: '#statusTemplate' },
+                ]],
+                parseData: function (res) {
+                    return {
+                        "code": res.code, //解析接口状态
+                        "msg": res.msg, //解析提示文本
+                        "total": res.total, //解析数据长度
+                        "data": res.data //解析数据列表
+                    };
+                },
+                response: {
+                    statusName: 'code' //规定数据状态的字段名称，默认：code
+                    , statusCode: 1 //规定成功的状态码，默认：0
+                    , msgName: 'msg' //规定状态信息的字段名称，默认：msg
+                    , countName: 'total' //规定数据总数的字段名称，默认：count
+                    , dataName: 'data' //规定数据列表的字段名称，默认：data
+                }
+            });
+
+        });
+    </script>
+</body>
+
+</html>
